@@ -1,0 +1,19 @@
+{
+  "nodes": [
+    {"id": "input_node", "type": "Input", "label": "User Query", "nodeCategory": "input"},
+    {"id": "trend_discovery_manager", "type": "Agent", "label": "Trend Discovery Manager", "nodeCategory": "agent"},
+    {"id": "tiktok_trends_agent", "type": "Agent", "label": "TikTok Trends Agent", "nodeCategory": "agent"},
+    {"id": "youtube_trends_agent", "type": "Agent", "label": "YouTube Trends Agent", "nodeCategory": "agent"},
+    {"id": "instagram_trends_agent", "type": "Agent", "label": "Instagram Trends Agent", "nodeCategory": "agent"},
+    {"id": "clip_generator_agent", "type": "Agent", "label": "Clip Generator Agent", "nodeCategory": "agent"},
+    {"id": "output_node", "type": "Output", "label": "Output", "nodeCategory": "end"}
+  ],
+  "edges": [
+    {"source": "input_node", "target": "trend_discovery_manager"},
+    {"source": "trend_discovery_manager", "target": "tiktok_trends_agent"},
+    {"source": "trend_discovery_manager", "target": "youtube_trends_agent"},
+    {"source": "trend_discovery_manager", "target": "instagram_trends_agent"},
+    {"source": "trend_discovery_manager", "target": "clip_generator_agent"},
+    {"source": "clip_generator_agent", "target": "output_node"}
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "agent_name": "Trend Discovery Manager",
+  "agent_id": "699bae65ac313b176acdea2e",
+  "description": "Coordinates platform sub-agents to fetch trending videos simultaneously, aggregates and ranks results into a unified trending feed",
+  "agent_type": "json",
+  "accessor": "result",
+  "auto_generated": true,
+  "response_schema": {
+    "trending_videos": [
+      {
+        "video_id": "string",
+        "title": "string",
+        "creator_username": "string",
+        "creator_display_name": "string",
+        "thumbnail_url": "string",
+        "video_url": "string",
+        "view_count": "number",
+        "like_count": "number",
+        "share_count": "number",
+        "comment_count": "number",
+        "engagement_score": "number",
+        "hashtags": [
+          "string"
+        ],
+        "posted_date": "string",
+        "duration_seconds": "number",
+        "trending_rank": "number",
+        "platform": "string"
+      }
+    ],
+    "summary": {
+      "total_videos": "number",
+      "tiktok_count": "number",
+      "youtube_count": "number",
+      "instagram_count": "number",
+      "trending_themes": [
+        "string"
+      ]
+    },
+    "fetched_at": "string"
+  },
+  "example_response": {
+    "trending_videos": [
+      {
+        "video_id": "sample string",
+        "title": "sample string",
+        "creator_username": "sample string",
+        "creator_display_name": "sample string",
+        "thumbnail_url": "sample string",
+        "video_url": "sample string",
+        "view_count": 0,
+        "like_count": 0,
+        "share_count": 0,
+        "comment_count": 0,
+        "engagement_score": 0,
+        "hashtags": [
+          "sample string"
+        ],
+        "posted_date": "sample string",
+        "duration_seconds": 0,
+        "trending_rank": 0,
+        "platform": "sample string"
+      }
+    ],
+    "summary": {
+      "total_videos": 0,
+      "tiktok_count": 0,
+      "youtube_count": 0,
+      "instagram_count": 0,
+      "trending_themes": [
+        "sample string"
+      ]
+    },
+    "fetched_at": "sample string"
+  }
+}

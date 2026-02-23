@@ -1,0 +1,71 @@
+{
+  "agents": {
+    "tiktok_trends_agent": {
+      "agent_id": "699bae50a672b9b9376d7efd",
+      "name": "TikTok Trends Agent",
+      "type": "sub-agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.2,
+      "top_p": 1,
+      "file_output": false,
+      "image_output": false,
+      "voice_output": false
+    },
+    "youtube_trends_agent": {
+      "agent_id": "699bae506aebb68b8d73f34c",
+      "name": "YouTube Trends Agent",
+      "type": "sub-agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.2,
+      "top_p": 1,
+      "file_output": false,
+      "image_output": false,
+      "voice_output": false
+    },
+    "instagram_trends_agent": {
+      "agent_id": "699bae50a672b9b9376d7eff",
+      "name": "Instagram Trends Agent",
+      "type": "sub-agent",
+      "provider": "perplexity",
+      "model": "sonar-pro",
+      "temperature": 0.2,
+      "top_p": 1,
+      "file_output": false,
+      "image_output": false,
+      "voice_output": false
+    },
+    "trend_discovery_manager": {
+      "agent_id": "699bae65ac313b176acdea2e",
+      "name": "Trend Discovery Manager",
+      "type": "manager",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.3,
+      "top_p": 1,
+      "file_output": false,
+      "image_output": false,
+      "voice_output": false,
+      "managed_agents": [
+        "699bae50a672b9b9376d7efd",
+        "699bae506aebb68b8d73f34c",
+        "699bae50a672b9b9376d7eff"
+      ]
+    },
+    "clip_generator_agent": {
+      "agent_id": "699bae76ba7d62583e0a4a8f",
+      "name": "Clip Generator Agent",
+      "type": "independent",
+      "provider": "openai",
+      "model": "gpt-4.1",
+      "temperature": 0.5,
+      "top_p": 0.95,
+      "file_output": true,
+      "image_output": false,
+      "voice_output": false
+    }
+  },
+  "workflow_id": "trendclip_workflow",
+  "created_at": "2026-02-23"
+}
