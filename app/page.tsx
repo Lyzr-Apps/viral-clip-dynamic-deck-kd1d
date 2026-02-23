@@ -3,9 +3,23 @@
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { callAIAgent } from '@/lib/aiAgent'
 import type { AIAgentResponse } from '@/lib/aiAgent'
-import { FiSearch, FiDownload, FiClock, FiEye, FiHeart, FiShare2, FiMessageCircle, FiChevronDown, FiX, FiPlay, FiScissors, FiGrid, FiList, FiHash, FiTrendingUp, FiZap, FiActivity, FiFilm, FiCheckCircle, FiAlertCircle, FiChevronRight, FiToggleLeft, FiToggleRight, FiArrowLeft, FiFilter, FiSliders, FiRefreshCw, FiExternalLink, FiLayers, FiBarChart2 } from 'react-icons/fi'
-import { SiTiktok, SiYoutube, SiInstagram } from 'react-icons/si'
-import { HiSparkles, HiLightningBolt, HiFire } from 'react-icons/hi'
+import {
+  Download, Clock, Eye, Heart, Share2, MessageCircle,
+  ChevronDown, X, Play, Scissors, Hash, TrendingUp,
+  Activity, Film, CheckCircle, AlertCircle, ChevronRight,
+  ToggleLeft, ToggleRight, ArrowLeft, SlidersHorizontal,
+  RefreshCw, ExternalLink, BarChart2, Sparkles, Zap,
+  Youtube, Instagram
+} from 'lucide-react'
+
+// ── TikTok SVG Icon (not available in lucide) ────────
+function TikTokIcon({ size = 16, className = '' }: { size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" className={className}>
+      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.34-6.34V8.81a8.23 8.23 0 004.76 1.52V6.88a4.85 4.85 0 01-1-.19z" />
+    </svg>
+  )
+}
 
 // ── Types ──────────────────────────────────────────────
 
@@ -192,10 +206,10 @@ const AGENTS_INFO = [
 
 function PlatformIcon({ platform, size = 16 }: { platform: string; size?: number }) {
   const p = getPlatformNormalized(platform)
-  if (p === 'tiktok') return <SiTiktok size={size} />
-  if (p === 'youtube') return <SiYoutube size={size} />
-  if (p === 'instagram') return <SiInstagram size={size} />
-  return <FiPlay size={size} />
+  if (p === 'tiktok') return <TikTokIcon size={size} />
+  if (p === 'youtube') return <Youtube size={size} />
+  if (p === 'instagram') return <Instagram size={size} />
+  return <Play size={size} />
 }
 
 function PlatformBadge({ platform }: { platform: string }) {
@@ -219,7 +233,13 @@ function EngagementBar({ score }: { score: number | undefined | null }) {
   const pct = Math.min(Math.max(s, 0), 100)
   return (
     <div className="w-full h-1.5 rounded-full bg-[hsl(260,20%,15%)] overflow-hidden">
-      <div className="h-full rounded-full transition-all duration-500" style={{ width: `${pct}%`, background: `linear-gradient(90deg, hsl(180,100%,50%), hsl(300,80%,50%))` }} />
+      <div
+        className="h-full rounded-full transition-all duration-500"
+        style={{
+          width: `${pct}%`,
+          background: 'linear-gradient(90deg, hsl(180,100%,50%), hsl(300,80%,50%))',
+        }}
+      />
     </div>
   )
 }
@@ -262,7 +282,6 @@ function VideoCard({ video, onClick }: { video: TrendingVideo; onClick: () => vo
       onClick={onClick}
       className="text-left rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 overflow-hidden transition-all duration-300 hover:border-[hsl(180,100%,50%)]/50 hover:shadow-[0_0_20px_rgba(0,255,255,0.15)] hover:scale-[1.02] group w-full"
     >
-      {/* Thumbnail area */}
       <div className={`aspect-video bg-gradient-to-br ${gradients[p] || gradients.tiktok} relative flex items-center justify-center`}>
         <PlatformIcon platform={video?.platform} size={40} />
         <div className="absolute top-2 right-2">
@@ -277,7 +296,6 @@ function VideoCard({ video, onClick }: { video: TrendingVideo; onClick: () => vo
           </div>
         )}
       </div>
-      {/* Info */}
       <div className="p-3 space-y-2">
         <h3 className="font-bold text-sm text-[hsl(180,100%,70%)] leading-tight line-clamp-2 group-hover:text-[hsl(180,100%,80%)] transition-colors">
           {video?.title ?? 'Untitled'}
@@ -286,9 +304,9 @@ function VideoCard({ video, onClick }: { video: TrendingVideo; onClick: () => vo
           {video?.creator_display_name || video?.creator_username || 'Unknown Creator'}
         </p>
         <div className="flex items-center gap-3 text-xs text-[hsl(180,50%,45%)]">
-          <span className="inline-flex items-center gap-1"><FiEye size={12} /> {formatNumber(video?.view_count)}</span>
-          <span className="inline-flex items-center gap-1"><FiHeart size={12} /> {formatNumber(video?.like_count)}</span>
-          <span className="inline-flex items-center gap-1"><FiShare2 size={12} /> {formatNumber(video?.share_count)}</span>
+          <span className="inline-flex items-center gap-1"><Eye size={12} /> {formatNumber(video?.view_count)}</span>
+          <span className="inline-flex items-center gap-1"><Heart size={12} /> {formatNumber(video?.like_count)}</span>
+          <span className="inline-flex items-center gap-1"><Share2 size={12} /> {formatNumber(video?.share_count)}</span>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider">Engagement</span>
@@ -301,17 +319,17 @@ function VideoCard({ video, onClick }: { video: TrendingVideo; onClick: () => vo
 }
 
 function ClipCard({ clip, artifactFile, index }: { clip: GeneratedClip; artifactFile?: ArtifactFile; index: number }) {
-  const p = getPlatformNormalized(clip?.target_platform)
   const highlightColors: Record<string, string> = {
     hook: 'bg-[hsl(180,100%,50%)] text-[hsl(260,30%,6%)]',
     punchline: 'bg-[hsl(300,80%,50%)] text-white',
     'key scene': 'bg-[hsl(60,100%,50%)] text-[hsl(260,30%,6%)]',
+    'viral moment': 'bg-[hsl(0,100%,55%)] text-white',
   }
   const hType = (clip?.highlight_type ?? '').toLowerCase()
   return (
     <div className="rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 overflow-hidden hover:border-[hsl(300,80%,50%)]/40 transition-all duration-300">
       <div className="aspect-video bg-gradient-to-br from-[hsl(300,60%,20%)] via-[hsl(260,40%,15%)] to-[hsl(240,30%,10%)] relative flex items-center justify-center">
-        <FiScissors size={32} className="text-[hsl(300,80%,50%)]" />
+        <Scissors size={32} className="text-[hsl(300,80%,50%)]" />
         <div className="absolute top-2 left-2">
           {clip?.highlight_type && (
             <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${highlightColors[hType] || 'bg-[hsl(260,20%,25%)] text-[hsl(180,50%,60%)]'}`}>
@@ -333,7 +351,7 @@ function ClipCard({ clip, artifactFile, index }: { clip: GeneratedClip; artifact
         <div className="flex items-center gap-2 flex-wrap">
           {clip?.target_platform && <PlatformBadge platform={clip.target_platform} />}
           {clip?.captions_included && (
-            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[hsl(260,20%,15%)] text-[hsl(180,50%,60%)] text-[10px]">
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-[hsl(260,20%,15%)] text-[hsl(180,50%,60%)] text-[10px] font-bold">
               CC
             </span>
           )}
@@ -352,7 +370,7 @@ function ClipCard({ clip, artifactFile, index }: { clip: GeneratedClip; artifact
             rel="noopener noreferrer"
             className="flex items-center justify-center gap-2 w-full mt-2 py-2 rounded bg-[hsl(180,100%,50%)] text-[hsl(260,30%,6%)] font-bold text-xs hover:shadow-[0_0_20px_rgba(0,255,255,0.5)] transition-all"
           >
-            <FiDownload size={14} /> Download Clip
+            <Download size={14} /> Download Clip
           </a>
         )}
       </div>
@@ -364,7 +382,7 @@ function AgentStatusPanel({ agents, activeAgentId }: { agents: typeof AGENTS_INF
   return (
     <div className="rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 p-4">
       <h3 className="text-xs font-bold uppercase tracking-widest text-[hsl(180,50%,45%)] mb-3 flex items-center gap-2">
-        <FiActivity size={14} /> Agent Status
+        <Activity size={14} /> Agent Status
       </h3>
       <div className="space-y-2">
         {agents.map((agent) => (
@@ -411,6 +429,19 @@ class ErrorBoundary extends React.Component<
     return this.props.children
   }
 }
+
+// ── CSS Keyframes ─────────────────────────────────────
+
+const slideInKeyframes = `
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 5px rgba(0,255,255,0.2); }
+  50% { box-shadow: 0 0 15px rgba(0,255,255,0.4); }
+}
+`
 
 // ── Main Page ──────────────────────────────────────────
 
@@ -461,25 +492,25 @@ export default function Page() {
       setTrendingVideos(SAMPLE_VIDEOS)
       setTrendSummary(SAMPLE_SUMMARY)
       setFetchedAt('2026-02-23T12:00:00Z')
-      if (clipHistory.length === 0) {
-        setClipHistory([{
-          id: 'sample_session_1',
-          sourceVideoTitle: 'I Built a Robot That Cooks Dinner - Gone Wrong',
-          clips: SAMPLE_CLIPS,
-          artifactFiles: [],
-          totalClips: 3,
-          processingSummary: 'Successfully generated 3 clips targeting TikTok, Instagram Reels, and YouTube Shorts with auto-generated captions.',
-          generatedAt: '2026-02-23T11:30:00Z',
-        }])
-      }
+      setClipHistory((prev) => {
+        if (prev.length === 0) {
+          return [{
+            id: 'sample_session_1',
+            sourceVideoTitle: 'I Built a Robot That Cooks Dinner - Gone Wrong',
+            clips: SAMPLE_CLIPS,
+            artifactFiles: [],
+            totalClips: 3,
+            processingSummary: 'Successfully generated 3 clips targeting TikTok, Instagram Reels, and YouTube Shorts with auto-generated captions.',
+            generatedAt: '2026-02-23T11:30:00Z',
+          }]
+        }
+        return prev
+      })
     } else {
-      if (trendingVideos === SAMPLE_VIDEOS) {
-        setTrendingVideos([])
-        setTrendSummary(null)
-        setFetchedAt('')
-      }
+      setTrendingVideos((prev) => prev === SAMPLE_VIDEOS ? [] : prev)
+      setTrendSummary((prev) => prev === SAMPLE_SUMMARY ? null : prev)
+      setFetchedAt((prev) => prev === '2026-02-23T12:00:00Z' ? '' : prev)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sampleDataOn])
 
   // ── Discover Trends ───────────────
@@ -489,7 +520,7 @@ export default function Page() {
     setSuccessMessage('')
     setActiveAgentId(AGENT_TREND_DISCOVERY)
     try {
-      const result = await callAIAgent(
+      const result: AIAgentResponse = await callAIAgent(
         'Find the top trending videos across TikTok, YouTube, and Instagram right now. Return comprehensive data for each trending video.',
         AGENT_TREND_DISCOVERY
       )
@@ -511,7 +542,7 @@ export default function Page() {
       } else {
         setErrorMessage(result?.error ?? 'Failed to fetch trending videos. Please try again.')
       }
-    } catch (err) {
+    } catch (err: any) {
       setActiveAgentId(null)
       setErrorMessage('Network error. Please check your connection and try again.')
     }
@@ -528,7 +559,7 @@ export default function Page() {
     setErrorMessage('')
     setActiveAgentId(AGENT_CLIP_GENERATOR)
 
-    const platformNames = selectedPlatforms.map(p => {
+    const platformNames = selectedPlatforms.map((p: string) => {
       if (p === 'tiktok') return 'TikTok'
       if (p === 'youtube_shorts') return 'YouTube Shorts'
       if (p === 'instagram_reels') return 'Instagram Reels'
@@ -536,7 +567,7 @@ export default function Page() {
     })
 
     try {
-      const result = await callAIAgent(
+      const result: AIAgentResponse = await callAIAgent(
         `Analyze this video and generate optimized clips: Title: ${selectedVideo.title}, Video ID: ${selectedVideo.video_id}, Platform: ${selectedVideo.platform}, Duration: ${selectedVideo.duration_seconds}s. Target platforms: ${platformNames.join(', ')}. Generate ${numClips} clip variations${includeCaptions ? ' with captions' : ' without captions'}.`,
         AGENT_CLIP_GENERATOR
       )
@@ -566,7 +597,7 @@ export default function Page() {
       } else {
         setErrorMessage(result?.error ?? 'Failed to generate clips. Please try again.')
       }
-    } catch (err) {
+    } catch (err: any) {
       setActiveAgentId(null)
       setErrorMessage('Network error during clip generation. Please try again.')
     }
@@ -574,12 +605,12 @@ export default function Page() {
   }, [selectedVideo, selectedPlatforms, numClips, includeCaptions])
 
   // ── Filter & Sort ─────────────────
-  const filteredVideos = trendingVideos.filter(v => {
+  const filteredVideos = trendingVideos.filter((v: TrendingVideo) => {
     if (platformFilter === 'all') return true
     return getPlatformNormalized(v?.platform) === platformFilter
   })
 
-  const sortedVideos = [...filteredVideos].sort((a, b) => {
+  const sortedVideos = [...filteredVideos].sort((a: TrendingVideo, b: TrendingVideo) => {
     if (sortBy === 'views') return (b?.view_count ?? 0) - (a?.view_count ?? 0)
     if (sortBy === 'shares') return (b?.share_count ?? 0) - (a?.share_count ?? 0)
     return (a?.trending_rank ?? 999) - (b?.trending_rank ?? 999)
@@ -588,7 +619,7 @@ export default function Page() {
   // ── Toggle target platform ───────
   const toggleTargetPlatform = (p: string) => {
     setSelectedPlatforms(prev =>
-      prev.includes(p) ? prev.filter(x => x !== p) : [...prev, p]
+      prev.includes(p) ? prev.filter((x: string) => x !== p) : [...prev, p]
     )
   }
 
@@ -611,6 +642,7 @@ export default function Page() {
 
   return (
     <ErrorBoundary>
+      <style>{slideInKeyframes}</style>
       <div className="min-h-screen font-sans tracking-wide leading-relaxed text-[hsl(180,100%,70%)] selection:bg-[hsl(180,100%,50%)]/30" style={{ background: 'linear-gradient(135deg, hsl(260,35%,8%) 0%, hsl(280,30%,10%) 50%, hsl(240,25%,8%) 100%)' }}>
 
         {/* ── Top Nav ──────────────────── */}
@@ -618,7 +650,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <FiScissors size={22} className="text-[hsl(180,100%,50%)]" />
+              <Scissors size={22} className="text-[hsl(180,100%,50%)]" />
               <span className="text-lg font-black tracking-wider text-[hsl(180,100%,70%)]" style={{ textShadow: '0 0 10px rgba(0,255,255,0.5), 0 0 20px rgba(0,255,255,0.3)' }}>
                 TrendClip
               </span>
@@ -627,10 +659,10 @@ export default function Page() {
             {/* Nav tabs */}
             <div className="flex items-center gap-1">
               <button type="button" onClick={() => setActiveTab('discover')} className={`px-4 py-2 rounded text-sm font-bold transition-all ${activeTab === 'discover' ? 'bg-[hsl(180,100%,50%)]/15 text-[hsl(180,100%,70%)] shadow-[0_0_10px_rgba(0,255,255,0.2)]' : 'text-[hsl(180,50%,45%)] hover:text-[hsl(180,100%,70%)]'}`}>
-                <span className="flex items-center gap-2"><FiTrendingUp size={16} /> Discover</span>
+                <span className="flex items-center gap-2"><TrendingUp size={16} /> Discover</span>
               </button>
               <button type="button" onClick={() => setActiveTab('history')} className={`px-4 py-2 rounded text-sm font-bold transition-all ${activeTab === 'history' ? 'bg-[hsl(180,100%,50%)]/15 text-[hsl(180,100%,70%)] shadow-[0_0_10px_rgba(0,255,255,0.2)]' : 'text-[hsl(180,50%,45%)] hover:text-[hsl(180,100%,70%)]'}`}>
-                <span className="flex items-center gap-2"><FiClock size={16} /> Clip History</span>
+                <span className="flex items-center gap-2"><Clock size={16} /> Clip History</span>
               </button>
             </div>
 
@@ -638,7 +670,7 @@ export default function Page() {
             <div className="flex items-center gap-2">
               <span className="text-xs text-[hsl(180,50%,45%)]">Sample Data</span>
               <button type="button" onClick={() => setSampleDataOn(prev => !prev)} className="transition-colors">
-                {sampleDataOn ? <FiToggleRight size={24} className="text-[hsl(180,100%,50%)]" /> : <FiToggleLeft size={24} className="text-[hsl(260,20%,30%)]" />}
+                {sampleDataOn ? <ToggleRight size={24} className="text-[hsl(180,100%,50%)]" /> : <ToggleLeft size={24} className="text-[hsl(260,20%,30%)]" />}
               </button>
             </div>
           </div>
@@ -648,18 +680,18 @@ export default function Page() {
         {errorMessage && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-3">
             <div className="flex items-center gap-2 p-3 rounded bg-[hsl(0,100%,55%)]/15 border border-[hsl(0,100%,55%)]/30 text-[hsl(0,100%,70%)] text-sm">
-              <FiAlertCircle size={16} className="flex-shrink-0" />
+              <AlertCircle size={16} className="flex-shrink-0" />
               <span className="flex-1">{errorMessage}</span>
-              <button type="button" onClick={() => setErrorMessage('')}><FiX size={14} /></button>
+              <button type="button" onClick={() => setErrorMessage('')}><X size={14} /></button>
             </div>
           </div>
         )}
         {successMessage && (
           <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-3">
             <div className="flex items-center gap-2 p-3 rounded bg-[hsl(180,100%,50%)]/15 border border-[hsl(180,100%,50%)]/30 text-[hsl(180,100%,70%)] text-sm">
-              <FiCheckCircle size={16} className="flex-shrink-0" />
+              <CheckCircle size={16} className="flex-shrink-0" />
               <span className="flex-1">{successMessage}</span>
-              <button type="button" onClick={() => setSuccessMessage('')}><FiX size={14} /></button>
+              <button type="button" onClick={() => setSuccessMessage('')}><X size={14} /></button>
             </div>
           </div>
         )}
@@ -685,9 +717,9 @@ export default function Page() {
                 className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded bg-[hsl(180,100%,50%)] text-[hsl(260,30%,6%)] font-bold text-sm hover:shadow-[0_0_30px_rgba(0,255,255,0.6)] transition-all disabled:opacity-50 disabled:cursor-not-allowed flex-shrink-0"
               >
                 {isLoadingTrends ? (
-                  <><FiRefreshCw size={16} className="animate-spin" /> Scanning Platforms...</>
+                  <><RefreshCw size={16} className="animate-spin" /> Scanning Platforms...</>
                 ) : (
-                  <><HiLightningBolt size={16} /> Find Trending</>
+                  <><Zap size={16} /> Find Trending</>
                 )}
               </button>
             </div>
@@ -696,25 +728,25 @@ export default function Page() {
             {trendSummary && (
               <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 text-xs">
-                  <FiBarChart2 size={14} className="text-[hsl(180,100%,50%)]" />
+                  <BarChart2 size={14} className="text-[hsl(180,100%,50%)]" />
                   <span className="font-bold">{trendSummary.total_videos ?? 0}</span>
                   <span className="text-[hsl(180,50%,45%)]">videos found</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 text-xs">
-                  <SiTiktok size={12} className="text-[hsl(180,100%,50%)]" />
+                  <TikTokIcon size={12} />
                   <span className="font-bold">{trendSummary.tiktok_count ?? 0}</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 text-xs">
-                  <SiYoutube size={12} className="text-[hsl(0,100%,50%)]" />
+                  <Youtube size={12} className="text-[hsl(0,100%,50%)]" />
                   <span className="font-bold">{trendSummary.youtube_count ?? 0}</span>
                 </div>
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 text-xs">
-                  <SiInstagram size={12} className="text-[hsl(300,80%,50%)]" />
+                  <Instagram size={12} className="text-[hsl(300,80%,50%)]" />
                   <span className="font-bold">{trendSummary.instagram_count ?? 0}</span>
                 </div>
                 {Array.isArray(trendSummary?.trending_themes) && trendSummary.trending_themes.length > 0 && (
                   <div className="flex items-center gap-1 flex-wrap">
-                    {trendSummary.trending_themes.slice(0, 5).map((theme, i) => (
+                    {trendSummary.trending_themes.slice(0, 5).map((theme: string, i: number) => (
                       <span key={i} className="px-2 py-0.5 rounded bg-[hsl(300,80%,50%)]/15 border border-[hsl(300,80%,50%)]/30 text-[hsl(300,80%,60%)] text-[10px] font-bold">
                         {theme}
                       </span>
@@ -734,11 +766,11 @@ export default function Page() {
               {/* Platform filter tabs */}
               <div className="flex items-center gap-1 p-1 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10">
                 {([
-                  { key: 'all', label: 'All', icon: null },
-                  { key: 'tiktok', label: 'TikTok', icon: <SiTiktok size={12} /> },
-                  { key: 'youtube', label: 'YouTube', icon: <SiYoutube size={12} /> },
-                  { key: 'instagram', label: 'Instagram', icon: <SiInstagram size={12} /> },
-                ] as const).map(tab => (
+                  { key: 'all' as const, label: 'All', icon: null },
+                  { key: 'tiktok' as const, label: 'TikTok', icon: <TikTokIcon size={12} /> },
+                  { key: 'youtube' as const, label: 'YouTube', icon: <Youtube size={12} /> },
+                  { key: 'instagram' as const, label: 'Instagram', icon: <Instagram size={12} /> },
+                ]).map(tab => (
                   <button
                     key={tab.key}
                     type="button"
@@ -757,9 +789,9 @@ export default function Page() {
                   onClick={() => setShowSortDropdown(prev => !prev)}
                   className="flex items-center gap-2 px-3 py-1.5 rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 text-xs font-bold text-[hsl(180,50%,45%)] hover:text-[hsl(180,100%,70%)] transition-all"
                 >
-                  <FiSliders size={12} />
+                  <SlidersHorizontal size={12} />
                   Sort: {sortLabels[sortBy]}
-                  <FiChevronDown size={12} className={`transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
+                  <ChevronDown size={12} className={`transition-transform ${showSortDropdown ? 'rotate-180' : ''}`} />
                 </button>
                 {showSortDropdown && (
                   <div className="absolute right-0 mt-1 w-44 rounded bg-[hsl(260,25%,12%)] border border-white/10 shadow-xl z-40 overflow-hidden">
@@ -782,7 +814,7 @@ export default function Page() {
             {isLoadingTrends && (
               <div>
                 <div className="flex items-center gap-2 mb-4 text-sm text-[hsl(180,100%,50%)]">
-                  <FiRefreshCw size={14} className="animate-spin" />
+                  <RefreshCw size={14} className="animate-spin" />
                   <span>Scanning platforms for trending content</span>
                   <span className="inline-flex gap-0.5">
                     <span className="animate-pulse">.</span>
@@ -800,7 +832,7 @@ export default function Page() {
             {!isLoadingTrends && sortedVideos.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="w-20 h-20 rounded-full bg-[hsl(260,25%,12%)] flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(0,255,255,0.1)]">
-                  <FiTrendingUp size={36} className="text-[hsl(180,100%,50%)]" />
+                  <TrendingUp size={36} className="text-[hsl(180,100%,50%)]" />
                 </div>
                 <h2 className="text-xl font-bold text-[hsl(180,100%,70%)] mb-2" style={{ textShadow: '0 0 10px rgba(0,255,255,0.3)' }}>
                   Ready to Discover
@@ -814,7 +846,7 @@ export default function Page() {
             {/* Video grid */}
             {!isLoadingTrends && sortedVideos.length > 0 && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {sortedVideos.map((video) => (
+                {sortedVideos.map((video: TrendingVideo) => (
                   <VideoCard
                     key={video?.video_id ?? Math.random().toString()}
                     video={video}
@@ -844,21 +876,21 @@ export default function Page() {
             {clipHistory.length === 0 && (
               <div className="flex flex-col items-center justify-center py-20 text-center">
                 <div className="w-20 h-20 rounded-full bg-[hsl(260,25%,12%)] flex items-center justify-center mb-6 shadow-[0_0_30px_rgba(0,255,255,0.1)]">
-                  <FiClock size={36} className="text-[hsl(180,50%,45%)]" />
+                  <Clock size={36} className="text-[hsl(180,50%,45%)]" />
                 </div>
                 <h2 className="text-xl font-bold text-[hsl(180,100%,70%)] mb-2">No Clips Generated Yet</h2>
                 <p className="text-sm text-[hsl(180,50%,45%)] max-w-md">
                   Go to the Discover tab, find trending videos, and generate clips. Your clip history will appear here.
                 </p>
                 <button type="button" onClick={() => setActiveTab('discover')} className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded bg-[hsl(180,100%,50%)] text-[hsl(260,30%,6%)] font-bold text-sm hover:shadow-[0_0_20px_rgba(0,255,255,0.5)] transition-all">
-                  <FiTrendingUp size={14} /> Go to Discover
+                  <TrendingUp size={14} /> Go to Discover
                 </button>
               </div>
             )}
 
             {clipHistory.length > 0 && (
               <div className="space-y-3">
-                {clipHistory.map((session) => (
+                {clipHistory.map((session: ClipSession) => (
                   <div key={session.id} className="rounded bg-[hsl(260,25%,9%)]/80 backdrop-blur-[12px] border border-white/10 overflow-hidden transition-all hover:border-[hsl(180,100%,50%)]/30">
                     <button
                       type="button"
@@ -866,16 +898,16 @@ export default function Page() {
                       className="w-full text-left p-4 flex items-center gap-4"
                     >
                       <div className="w-10 h-10 rounded bg-[hsl(300,60%,20%)] flex items-center justify-center flex-shrink-0">
-                        <FiFilm size={20} className="text-[hsl(300,80%,60%)]" />
+                        <Film size={20} className="text-[hsl(300,80%,60%)]" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <h3 className="font-bold text-sm text-[hsl(180,100%,70%)] truncate">{session.sourceVideoTitle}</h3>
                         <div className="flex items-center gap-3 text-xs text-[hsl(180,50%,45%)] mt-0.5">
-                          <span className="inline-flex items-center gap-1"><FiScissors size={10} /> {session.totalClips} clips</span>
+                          <span className="inline-flex items-center gap-1"><Scissors size={10} /> {session.totalClips} clips</span>
                           <span>{new Date(session.generatedAt).toLocaleDateString()}</span>
                         </div>
                       </div>
-                      <FiChevronRight size={16} className={`text-[hsl(180,50%,45%)] transition-transform flex-shrink-0 ${expandedHistory === session.id ? 'rotate-90' : ''}`} />
+                      <ChevronRight size={16} className={`text-[hsl(180,50%,45%)] transition-transform flex-shrink-0 ${expandedHistory === session.id ? 'rotate-90' : ''}`} />
                     </button>
 
                     {expandedHistory === session.id && (
@@ -886,7 +918,7 @@ export default function Page() {
                           </div>
                         )}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                          {Array.isArray(session.clips) && session.clips.map((clip, idx) => (
+                          {Array.isArray(session.clips) && session.clips.map((clip: GeneratedClip, idx: number) => (
                             <ClipCard
                               key={clip?.clip_id ?? idx}
                               clip={clip}
@@ -918,14 +950,14 @@ export default function Page() {
             />
 
             {/* Panel */}
-            <div className="relative w-full max-w-lg bg-[hsl(260,30%,7%)] border-l border-white/10 shadow-2xl overflow-y-auto" style={{ animation: 'slideInRight 0.3s ease-out' }}>
+            <div className="relative w-full max-w-lg border-l border-white/10 shadow-2xl overflow-y-auto" style={{ background: 'hsl(260, 30%, 7%)', animation: 'slideInRight 0.3s ease-out' }}>
               {/* Close button */}
               <button
                 type="button"
                 onClick={() => { setShowDetailPanel(false); setShowClipResults(false) }}
                 className="absolute top-4 right-4 z-10 w-8 h-8 rounded flex items-center justify-center bg-white/10 hover:bg-white/20 text-[hsl(180,100%,70%)] transition-colors"
               >
-                <FiX size={18} />
+                <X size={18} />
               </button>
 
               {!showClipResults ? (
@@ -942,7 +974,7 @@ export default function Page() {
                     </div>
                     {selectedVideo.video_url && (
                       <a href={selectedVideo.video_url} target="_blank" rel="noopener noreferrer" className="absolute bottom-3 left-3 flex items-center gap-1 bg-black/60 text-[hsl(180,100%,70%)] px-2 py-1 rounded text-xs hover:bg-black/80 transition-colors">
-                        <FiExternalLink size={12} /> Watch Original
+                        <ExternalLink size={12} /> Watch Original
                       </a>
                     )}
                   </div>
@@ -968,19 +1000,19 @@ export default function Page() {
                     <div className="grid grid-cols-2 gap-3">
                       <div className="rounded bg-[hsl(260,25%,12%)] border border-white/5 p-3 text-center">
                         <div className="text-lg font-black text-[hsl(180,100%,50%)]">{formatNumber(selectedVideo.view_count)}</div>
-                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><FiEye size={10} /> Views</div>
+                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><Eye size={10} /> Views</div>
                       </div>
                       <div className="rounded bg-[hsl(260,25%,12%)] border border-white/5 p-3 text-center">
                         <div className="text-lg font-black text-[hsl(0,80%,60%)]">{formatNumber(selectedVideo.like_count)}</div>
-                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><FiHeart size={10} /> Likes</div>
+                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><Heart size={10} /> Likes</div>
                       </div>
                       <div className="rounded bg-[hsl(260,25%,12%)] border border-white/5 p-3 text-center">
                         <div className="text-lg font-black text-[hsl(300,80%,60%)]">{formatNumber(selectedVideo.share_count)}</div>
-                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><FiShare2 size={10} /> Shares</div>
+                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><Share2 size={10} /> Shares</div>
                       </div>
                       <div className="rounded bg-[hsl(260,25%,12%)] border border-white/5 p-3 text-center">
                         <div className="text-lg font-black text-[hsl(60,100%,50%)]">{formatNumber(selectedVideo.comment_count)}</div>
-                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><FiMessageCircle size={10} /> Comments</div>
+                        <div className="text-[10px] text-[hsl(180,50%,45%)] uppercase tracking-wider flex items-center justify-center gap-1"><MessageCircle size={10} /> Comments</div>
                       </div>
                     </div>
 
@@ -996,9 +1028,9 @@ export default function Page() {
                     {/* Hashtags */}
                     {Array.isArray(selectedVideo?.hashtags) && selectedVideo.hashtags.length > 0 && (
                       <div>
-                        <h3 className="text-xs text-[hsl(180,50%,45%)] uppercase tracking-wider mb-2 flex items-center gap-1"><FiHash size={12} /> Hashtags</h3>
+                        <h3 className="text-xs text-[hsl(180,50%,45%)] uppercase tracking-wider mb-2 flex items-center gap-1"><Hash size={12} /> Hashtags</h3>
                         <div className="flex flex-wrap gap-1.5">
-                          {selectedVideo.hashtags.map((tag, i) => (
+                          {selectedVideo.hashtags.map((tag: string, i: number) => (
                             <span key={i} className="px-2 py-0.5 rounded bg-[hsl(180,100%,50%)]/10 border border-[hsl(180,100%,50%)]/20 text-[hsl(180,100%,60%)] text-xs">
                               {tag?.startsWith('#') ? tag : `#${tag}`}
                             </span>
@@ -1013,7 +1045,7 @@ export default function Page() {
                     {/* Clip Generation Options */}
                     <div>
                       <h3 className="text-sm font-bold text-[hsl(180,100%,70%)] mb-3 flex items-center gap-2" style={{ textShadow: '0 0 8px rgba(0,255,255,0.3)' }}>
-                        <FiScissors size={16} /> Generate Clips
+                        <Scissors size={16} /> Generate Clips
                       </h3>
 
                       {/* Target platforms */}
@@ -1021,9 +1053,9 @@ export default function Page() {
                         <label className="text-xs text-[hsl(180,50%,45%)] uppercase tracking-wider block mb-2">Target Platforms</label>
                         <div className="flex flex-wrap gap-2">
                           {[
-                            { key: 'tiktok', label: 'TikTok', icon: <SiTiktok size={14} /> },
-                            { key: 'youtube_shorts', label: 'YT Shorts', icon: <SiYoutube size={14} /> },
-                            { key: 'instagram_reels', label: 'IG Reels', icon: <SiInstagram size={14} /> },
+                            { key: 'tiktok', label: 'TikTok', icon: <TikTokIcon size={14} /> },
+                            { key: 'youtube_shorts', label: 'YT Shorts', icon: <Youtube size={14} /> },
+                            { key: 'instagram_reels', label: 'IG Reels', icon: <Instagram size={14} /> },
                           ].map(p => (
                             <button
                               key={p.key}
@@ -1041,7 +1073,7 @@ export default function Page() {
                       <div className="flex items-center justify-between mb-4">
                         <label className="text-xs text-[hsl(180,50%,45%)] uppercase tracking-wider">Include Captions</label>
                         <button type="button" onClick={() => setIncludeCaptions(prev => !prev)} className="transition-colors">
-                          {includeCaptions ? <FiToggleRight size={24} className="text-[hsl(180,100%,50%)]" /> : <FiToggleLeft size={24} className="text-[hsl(260,20%,30%)]" />}
+                          {includeCaptions ? <ToggleRight size={24} className="text-[hsl(180,100%,50%)]" /> : <ToggleLeft size={24} className="text-[hsl(260,20%,30%)]" />}
                         </button>
                       </div>
 
@@ -1070,9 +1102,9 @@ export default function Page() {
                         className="w-full flex items-center justify-center gap-2 py-3 rounded bg-gradient-to-r from-[hsl(180,100%,50%)] to-[hsl(300,80%,50%)] text-[hsl(260,30%,6%)] font-bold text-sm hover:shadow-[0_0_30px_rgba(0,255,255,0.4)] transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         {isGeneratingClips ? (
-                          <><FiRefreshCw size={16} className="animate-spin" /> Analyzing Moments... Generating Clips...</>
+                          <><RefreshCw size={16} className="animate-spin" /> Analyzing Moments... Generating Clips...</>
                         ) : (
-                          <><HiSparkles size={16} /> Generate Clips</>
+                          <><Sparkles size={16} /> Generate Clips</>
                         )}
                       </button>
                     </div>
@@ -1088,17 +1120,17 @@ export default function Page() {
                       onClick={() => setShowClipResults(false)}
                       className="flex items-center gap-1 text-xs text-[hsl(180,50%,45%)] hover:text-[hsl(180,100%,70%)] transition-colors mb-3"
                     >
-                      <FiArrowLeft size={14} /> Back to Video Details
+                      <ArrowLeft size={14} /> Back to Video Details
                     </button>
                     <h2 className="text-lg font-bold text-[hsl(180,100%,70%)]" style={{ textShadow: '0 0 8px rgba(0,255,255,0.3)' }}>
-                      <span className="flex items-center gap-2"><FiScissors size={18} /> Generated Clips</span>
+                      <span className="flex items-center gap-2"><Scissors size={18} /> Generated Clips</span>
                     </h2>
                     <p className="text-sm text-[hsl(180,50%,45%)] mt-1 truncate">
                       Source: {clipSourceTitle || selectedVideo?.title || 'Unknown'}
                     </p>
                     {clips.length > 0 && (
                       <div className="flex items-center gap-2 mt-2 text-xs text-[hsl(180,100%,50%)]">
-                        <FiCheckCircle size={14} />
+                        <CheckCircle size={14} />
                         <span>{clips.length} clips generated</span>
                       </div>
                     )}
@@ -1113,7 +1145,7 @@ export default function Page() {
 
                   {/* Clips list */}
                   <div className="px-5 space-y-3">
-                    {Array.isArray(clips) && clips.map((clip, idx) => (
+                    {Array.isArray(clips) && clips.map((clip: GeneratedClip, idx: number) => (
                       <ClipCard
                         key={clip?.clip_id ?? idx}
                         clip={clip}
@@ -1135,7 +1167,7 @@ export default function Page() {
                       <div className="border-t border-white/10 pt-4">
                         <h3 className="text-xs text-[hsl(180,50%,45%)] uppercase tracking-wider mb-2">Downloadable Files</h3>
                         <div className="space-y-2">
-                          {artifactFiles.map((file, idx) => (
+                          {artifactFiles.map((file: ArtifactFile, idx: number) => (
                             <a
                               key={idx}
                               href={file?.file_url ?? '#'}
@@ -1143,7 +1175,7 @@ export default function Page() {
                               rel="noopener noreferrer"
                               className="flex items-center gap-2 p-2 rounded bg-[hsl(260,25%,12%)] border border-white/5 text-xs text-[hsl(180,100%,70%)] hover:border-[hsl(180,100%,50%)]/30 transition-all"
                             >
-                              <FiDownload size={14} className="text-[hsl(180,100%,50%)] flex-shrink-0" />
+                              <Download size={14} className="text-[hsl(180,100%,50%)] flex-shrink-0" />
                               <span className="truncate flex-1">{file?.name ?? `Clip ${idx + 1}`}</span>
                               {file?.format_type && (
                                 <span className="px-1.5 py-0.5 rounded bg-[hsl(260,20%,18%)] text-[hsl(180,50%,45%)] text-[10px] uppercase">{file.format_type}</span>
@@ -1162,7 +1194,7 @@ export default function Page() {
                       onClick={() => { setShowDetailPanel(false); setShowClipResults(false) }}
                       className="w-full flex items-center justify-center gap-2 py-2.5 rounded border border-[hsl(180,100%,50%)]/30 text-[hsl(180,100%,70%)] text-sm font-bold hover:bg-[hsl(180,100%,50%)]/10 transition-all"
                     >
-                      <FiTrendingUp size={14} /> Back to Discover
+                      <TrendingUp size={14} /> Back to Discover
                     </button>
                   </div>
                 </div>
@@ -1170,10 +1202,6 @@ export default function Page() {
             </div>
           </div>
         )}
-
-        {/* ── Inline Keyframes via style tag ── */}
-        {/* NOTE: using dangerouslySetInnerHTML to inject keyframes for slide animation */}
-        <div dangerouslySetInnerHTML={{ __html: `<style>@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}</style>` }} />
 
       </div>
     </ErrorBoundary>
